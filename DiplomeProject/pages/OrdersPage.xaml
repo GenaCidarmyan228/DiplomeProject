@@ -1,0 +1,65 @@
+﻿<Page x:Class="KitchenManager.Pages.OrdersPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="900"
+      Title="Заказы" Loaded="Page_Loaded" Background="{StaticResource AppBackground}">
+
+    <Grid Margin="25">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="Заказы" FontSize="26" FontWeight="Bold" Foreground="{StaticResource TextPrimary}" VerticalAlignment="Center" Margin="0,0,20,0"/>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="Поиск:" Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="14" FontWeight="SemiBold"/>
+                <TextBox x:Name="TxtSearch" Width="250" Height="35" TextChanged="TxtSearch_TextChanged"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="+ Новый заказ" Width="150" Margin="0,0,10,0" Click="BtnAdd_Click" Style="{StaticResource SuccessBtnStyle}"/>
+                <Button Content="Изменить" Width="110" Margin="0,0,10,0" Click="BtnEdit_Click" Style="{StaticResource PrimaryBtnStyle}"/>
+                <Button Content="Удалить" Width="100" Click="BtnDelete_Click" Style="{StaticResource DangerBtnStyle}"/>
+            </StackPanel>
+        </Grid>
+
+        <Border Grid.Row="1" Background="{StaticResource CardBackground}" CornerRadius="10" Effect="{StaticResource CardShadow}">
+            <DataGrid x:Name="DGridOrders" AutoGenerateColumns="False" IsReadOnly="True" Margin="15" BorderThickness="0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="№" Binding="{Binding ID_Order}" Width="50"/>
+                    <DataGridTextColumn Header="ДАТА" Binding="{Binding OrderDate, StringFormat=dd.MM.yyyy}" Width="100"/>
+
+                    <DataGridTextColumn Header="СТАТУС" Binding="{Binding OrderStatus.StatusName}" Width="130">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Background" Value="{Binding StatusColor}"/>
+                                <Setter Property="Padding" Value="10,5"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="HorizontalAlignment" Value="Left"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="КЛИЕНТ" Binding="{Binding ClientFullName}" Width="200"/>
+                    <DataGridTextColumn Header="СОТРУДНИК" Binding="{Binding EmployeeFullName}" Width="180"/>
+                    <DataGridTextColumn Header="СУММА" Binding="{Binding TotalPrice, StringFormat='{}{0:N2} ₽'}" Width="120" FontWeight="Bold"/>
+                    <DataGridTextColumn Header="ТОВАР" Binding="{Binding Equipment.Title}" Width="200"/>
+                    <DataGridTextColumn Header="УСЛУГА" Binding="{Binding Services.Title}" Width="200"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+    </Grid>
+</Page>
