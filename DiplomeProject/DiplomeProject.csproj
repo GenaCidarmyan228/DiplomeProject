@@ -133,6 +133,7 @@
     <Compile Include="windows\AddServiceWindow.xaml.cs">
       <DependentUpon>AddServiceWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="windows\AuthChecker.cs" />
     <Compile Include="windows\EditOrderWindow.xaml.cs">
       <DependentUpon>EditOrderWindow.xaml</DependentUpon>
     </Compile>
