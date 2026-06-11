@@ -10,6 +10,7 @@
     <Grid Margin="25">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -31,10 +32,35 @@
                 <Button Content="+ Новый заказ" Width="150" Margin="0,0,10,0" Click="BtnAdd_Click" Style="{StaticResource SuccessBtnStyle}"/>
                 <Button Content="Изменить" Width="110" Margin="0,0,10,0" Click="BtnEdit_Click" Style="{StaticResource PrimaryBtnStyle}"/>
                 <Button Content="Удалить" Width="100" Click="BtnDelete_Click" Style="{StaticResource DangerBtnStyle}"/>
+                <Button x:Name="BtnPrint"  Content="Печать заказа" Click="BtnPrint_Click" Style="{StaticResource SuccessBtnStyle}" Width="150" Margin="10,0,0,0"/>
+                <Button x:Name="BtnExport" Content="В Excel" Click="BtnExport_Click" Style="{StaticResource SuccessBtnStyle}" Foreground="White" Width="100" Margin="10,0,0,0"/>
             </StackPanel>
         </Grid>
 
-        <Border Grid.Row="1" Background="{StaticResource CardBackground}" CornerRadius="10" Effect="{StaticResource CardShadow}">
+        <UniformGrid Grid.Row="1" Columns="3" Margin="0,0,0,20">
+            <Border Background="#6C5CE7" CornerRadius="8" Padding="15" Margin="0,0,10,0">
+                <StackPanel>
+                    <TextBlock Text="ВСЕГО ЗАКАЗОВ" FontSize="12" Foreground="#E0DFFF" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="TxtTotalOrdersCount" Text="0" FontSize="24" Foreground="White" FontWeight="Bold" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <Border Background="#00B894" CornerRadius="8" Padding="15" Margin="5,0,5,0">
+                <StackPanel>
+                    <TextBlock Text="ОБЩАЯ ВЫРУЧКА" FontSize="12" Foreground="#D1F7ED" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="TxtTotalRevenue" Text="0 ₽" FontSize="24" Foreground="White" FontWeight="Bold" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <Border Background="#FDCB6E" CornerRadius="8" Padding="15" Margin="10,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="ЗАКАЗОВ В РАБОТЕ" FontSize="12" Foreground="#FFF4DB" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="TxtActiveOrdersCount" Text="0" FontSize="24" Foreground="White" FontWeight="Bold" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Border>
+        </UniformGrid>
+
+        <Border Grid.Row="2" Background="{StaticResource CardBackground}" CornerRadius="10" Effect="{StaticResource CardShadow}">
             <DataGrid x:Name="DGridOrders" AutoGenerateColumns="False" IsReadOnly="True" Margin="15" BorderThickness="0">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="№" Binding="{Binding ID_Order}" Width="50"/>
