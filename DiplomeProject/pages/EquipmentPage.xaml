@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
-      d:DesignHeight="600" d:DesignWidth="900"
+      d:DesignHeight="700" d:DesignWidth="1300"
       Title="Склад оборудования" Loaded="Page_Loaded" Background="{StaticResource AppBackground}">
 
     <Grid Margin="25">
@@ -20,27 +20,74 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text="Оборудование" FontSize="26" FontWeight="Bold" Foreground="{StaticResource TextPrimary}" VerticalAlignment="Center" Margin="0,0,20,0"/>
+            <TextBlock Grid.Column="0" Text="Оборудование" FontSize="32" FontWeight="Bold" Foreground="{StaticResource TextPrimary}" VerticalAlignment="Center" Margin="0,0,25,0"/>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                <TextBlock Text="Поиск:" Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="14" FontWeight="SemiBold"/>
-                <TextBox x:Name="TxtSearch" Width="250" Height="35" TextChanged="TxtSearch_TextChanged"/>
+                <TextBlock Text="Поиск:" Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="20" FontWeight="SemiBold"/>
+                <TextBox x:Name="TxtSearch" Width="280" Height="40" FontSize="20" VerticalContentAlignment="Center" TextChanged="TxtSearch_TextChanged"/>
             </StackPanel>
 
             <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="+ Добавить товар" Width="160" Margin="0,0,10,0" Click="BtnAdd_Click" Style="{StaticResource SuccessBtnStyle}"/>
-                <Button Content="Изменить" Width="110" Margin="0,0,10,0" Click="BtnEdit_Click" Style="{StaticResource PrimaryBtnStyle}"/>
-                <Button Content="Удалить" Width="100" Click="BtnDelete_Click" Style="{StaticResource DangerBtnStyle}"/>
+                <Button Content="+ Добавить товар" Width="200" Height="55" Margin="0,0,15,0" Click="BtnAdd_Click" Style="{StaticResource SuccessBtnStyle}" FontWeight="Bold" FontSize="18"/>
+                <Button Content="Изменить" Width="140" Height="55" Margin="0,0,15,0" Click="BtnEdit_Click" Style="{StaticResource PrimaryBtnStyle}" FontWeight="Bold" FontSize="18"/>
+                <Button Content="Удалить" Width="120" Height="55" Click="BtnDelete_Click" Style="{StaticResource DangerBtnStyle}" FontWeight="Bold" FontSize="18"/>
             </StackPanel>
         </Grid>
 
         <Border Grid.Row="1" Background="{StaticResource CardBackground}" CornerRadius="10" Effect="{StaticResource CardShadow}">
-            <DataGrid x:Name="DGridEquipment" AutoGenerateColumns="False" IsReadOnly="True" Margin="15" BorderThickness="0">
+            <DataGrid x:Name="DGridEquipment" AutoGenerateColumns="False" IsReadOnly="True" Margin="10" BorderThickness="0"
+                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                      GridLinesVisibility="Horizontal" FontSize="18" MinRowHeight="50">
+
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="FontSize" Value="18"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Padding" Value="10"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="НАЗВАНИЕ" Binding="{Binding Title}" Width="*"/>
-                    <DataGridTextColumn Header="ОПИСАНИЕ" Binding="{Binding Description}" Width="2*"/>
-                    <DataGridTextColumn Header="ЦЕНА" Binding="{Binding Price, StringFormat='{}{0:N2} ₽'}" Width="120"/>
-                    <DataGridTextColumn Header="ОСТАТОК (ШТ.)" Binding="{Binding StockQuantity}" Width="130" FontWeight="Bold" Foreground="{StaticResource PrimaryColor}"/>
+                    <DataGridTextColumn Header="НАЗВАНИЕ" Binding="{Binding Title}" Width="*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Padding" Value="5"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="ОПИСАНИЕ" Binding="{Binding Description}" Width="2*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Padding" Value="5"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="ЦЕНА" Binding="{Binding Price, StringFormat='{}{0:N2} ₽'}" Width="Auto" MinWidth="120">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Padding" Value="5"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="ОСТАТОК (ШТ.)" Binding="{Binding StockQuantity}" Width="Auto" MinWidth="150">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="Padding" Value="5"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Border>

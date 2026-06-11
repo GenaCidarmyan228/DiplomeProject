@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
-      d:DesignHeight="600" d:DesignWidth="900"
+      d:DesignHeight="700" d:DesignWidth="1300"
       Title="Клиенты" Loaded="Page_Loaded" Background="{StaticResource AppBackground}">
 
     <Grid Margin="25">
@@ -13,7 +13,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Шапка с заголовком, поиском и кнопками -->
         <Grid Grid.Row="0" Margin="0,0,0,20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -21,30 +20,92 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text="База клиентов" FontSize="26" FontWeight="Bold" Foreground="{StaticResource TextPrimary}" VerticalAlignment="Center" Margin="0,0,20,0"/>
+            <TextBlock Grid.Column="0" Text="База клиентов" FontSize="32" FontWeight="Bold" Foreground="{StaticResource TextPrimary}" VerticalAlignment="Center" Margin="0,0,25,0"/>
 
-            <!-- Поле поиска -->
             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                <TextBlock Text="Поиск:" Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="14" FontWeight="SemiBold"/>
-                <TextBox x:Name="TxtSearch" Width="250" Height="35" TextChanged="TxtSearch_TextChanged"/>
+                <TextBlock Text="Поиск:" Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="20" FontWeight="SemiBold"/>
+                <TextBox x:Name="TxtSearch" Width="280" Height="40" FontSize="20" VerticalContentAlignment="Center" TextChanged="TxtSearch_TextChanged"/>
             </StackPanel>
 
             <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="+ Новый клиент" Width="140" Margin="0,0,10,0" Click="BtnAdd_Click" Style="{StaticResource PrimaryBtnStyle}"/>
-                <Button Content="Удалить" Width="100" Click="BtnDelete_Click" Style="{StaticResource DangerBtnStyle}"/>
+                <Button Content="+ Новый клиент" Width="180" Height="55" Margin="0,0,15,0" Click="BtnAdd_Click" Style="{StaticResource PrimaryBtnStyle}" FontWeight="Bold" FontSize="18"/>
+                <Button Content="Удалить" Width="120" Height="55" Click="BtnDelete_Click" Style="{StaticResource DangerBtnStyle}" FontWeight="Bold" FontSize="18"/>
             </StackPanel>
         </Grid>
 
-        
         <Border Grid.Row="1" Background="{StaticResource CardBackground}" CornerRadius="10" Effect="{StaticResource CardShadow}">
-            <DataGrid x:Name="DGridClients" AutoGenerateColumns="False" IsReadOnly="True" Margin="15" BorderThickness="0">
+            <DataGrid x:Name="DGridClients" AutoGenerateColumns="False" IsReadOnly="True" Margin="10" BorderThickness="0"
+                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                      GridLinesVisibility="Horizontal" FontSize="18" MinRowHeight="50">
+
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="FontSize" Value="18"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Padding" Value="10"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding ID_Client}" Width="60" FontWeight="Bold" Foreground="{StaticResource PrimaryColor}"/>
-                    <DataGridTextColumn Header="ФАМИЛИЯ" Binding="{Binding Surname}" Width="*"/>
-                    <DataGridTextColumn Header="ИМЯ" Binding="{Binding Name}" Width="*"/>
-                    <DataGridTextColumn Header="ОТЧЕСТВО" Binding="{Binding Patronymic}" Width="*"/>
-                    <DataGridTextColumn Header="ТЕЛЕФОН" Binding="{Binding Phone}" Width="150"/>
-                    <DataGridTextColumn Header="АДРЕС" Binding="{Binding Address}" Width="250"/>
+                    <DataGridTextColumn Header="ID" Binding="{Binding ID_Client}" Width="Auto" MinWidth="60">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Padding" Value="5"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="ФАМИЛИЯ" Binding="{Binding Surname}" Width="*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Padding" Value="5"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="ИМЯ" Binding="{Binding Name}" Width="*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Padding" Value="5"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="ОТЧЕСТВО" Binding="{Binding Patronymic}" Width="*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Padding" Value="5"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="ТЕЛЕФОН" Binding="{Binding Phone}" Width="Auto" MinWidth="180">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Padding" Value="5"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="АДРЕС" Binding="{Binding Address}" Width="2*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Padding" Value="5"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Border>

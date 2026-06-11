@@ -62,18 +62,18 @@
                 </StackPanel>
 
                 <StackPanel Grid.Row="1">
-                    <Button Content="Заказы" Click="BtnOrders_Click" Style="{StaticResource SidebarMenuBtn}"/>
-                    <Button Content="Оборудование" Click="BtnEquipment_Click" Style="{StaticResource SidebarMenuBtn}"/>
-                    <Button Content="Услуги" Click="BtnServices_Click" Style="{StaticResource SidebarMenuBtn}"/>
-                    <Button Content="Клиенты" Click="BtnClients_Click" Style="{StaticResource SidebarMenuBtn}"/>
+                    <Button Content="Заказы" Click="BtnOrders_Click" Style="{StaticResource SidebarMenuBtn}" FontSize="24"/>
+                    <Button Content="Оборудование" Click="BtnEquipment_Click" Style="{StaticResource SidebarMenuBtn}" FontSize="24"/>
+                    <Button Content="Услуги" Click="BtnServices_Click" Style="{StaticResource SidebarMenuBtn}" FontSize="24" />
+                    <Button Content="Клиенты" Click="BtnClients_Click" Style="{StaticResource SidebarMenuBtn}" FontSize="24"/>
 
                     <Border Height="1" Background="#334155" Margin="20,15"/>
 
-                    <Button x:Name="BtnEmployees" Content="Сотрудники" Click="BtnEmployees_Click" Style="{StaticResource SidebarMenuBtn}"/>
+                    <Button x:Name="BtnEmployees" Content="Сотрудники" Click="BtnEmployees_Click" Style="{StaticResource SidebarMenuBtn}" FontSize="24"/>
                 </StackPanel>
 
                 <Button Grid.Row="2" Content="Выход из системы" Click="BtnExit_Click" 
-                        Margin="20,0,20,30" Height="45" 
+                        Margin="20,0,20,30" Height="45" FontSize="24"
                         Style="{StaticResource DangerBtnStyle}"/>
             </Grid>
         </Border>
