@@ -28,3 +28,4 @@ namespace DiplomeProject
         public virtual ICollection<Orders> Orders { get; set; }
     }
 }
+

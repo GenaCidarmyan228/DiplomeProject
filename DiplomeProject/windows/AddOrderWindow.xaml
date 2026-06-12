@@ -16,6 +16,7 @@
                     <ColumnDefinition Width="150"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
+
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -40,11 +41,18 @@
                 </ComboBox>
 
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Товар:" FontSize="18" Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center" Margin="0,0,0,20"/>
-                <ComboBox x:Name="ComboEquipment" Grid.Row="1" Grid.Column="1" DisplayMemberPath="Title" SelectedValuePath="ID_Equipment" FontSize="18" Height="45" VerticalContentAlignment="Center" Margin="0,0,0,20" Padding="5"/>
+
+                <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,0,0,20">
+                    <ComboBox x:Name="ComboEquipment" DisplayMemberPath="Title" SelectedValuePath="ID_Equipment" FontSize="18" Height="45" VerticalContentAlignment="Center" Padding="5" SelectionChanged="ComboEquipment_SelectionChanged"/>
+
+                    <StackPanel Margin="0,5,0,0">
+                        <TextBlock x:Name="TxtStockInfo" Text="Остаток на складе: выберите товар" FontSize="12" Foreground="Gray" Margin="0,0,0,5"/>
+                        <ProgressBar x:Name="PbStock" Height="10" Minimum="0" Maximum="20" Value="0" Background="#E9ECEF" BorderThickness="0"/>
+                    </StackPanel>
+                </StackPanel>
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Услуга:" FontSize="18" Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center" Margin="0,0,0,20"/>
                 <ComboBox x:Name="ComboServices" Grid.Row="2" Grid.Column="1" DisplayMemberPath="Title" SelectedValuePath="ID_Service" FontSize="18" Height="45" VerticalContentAlignment="Center" Margin="0,0,0,20" Padding="5"/>
-
 
                 <TextBlock Grid.Row="3" Grid.Column="0" Text="Сотрудник:" FontSize="18" Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center" Margin="0,0,0,30"/>
                 <ComboBox x:Name="ComboEmployees" Grid.Row="3" Grid.Column="1" SelectedValuePath="ID_Employee" FontSize="18" Height="45" VerticalContentAlignment="Center" Margin="0,0,0,30" Padding="5">

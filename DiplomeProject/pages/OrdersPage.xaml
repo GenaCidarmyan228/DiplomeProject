@@ -33,6 +33,7 @@
                 <Button Content="Изменить" Width="130" Height="55" Margin="0,0,15,0" Click="BtnEdit_Click" Style="{StaticResource PrimaryBtnStyle}" FontWeight="Bold" FontSize="18"/>
                 <Button Content="Удалить" Width="120" Height="55" Click="BtnDelete_Click" Style="{StaticResource DangerBtnStyle}" FontWeight="Bold" FontSize="18"/>
                 <Button x:Name="BtnPrint" Height="55" Content="Печать заказа" Click="BtnPrint_Click" Style="{StaticResource SuccessBtnStyle}" Width="170" Margin="15,0,0,0" FontWeight="Bold" FontSize="18"/>
+                <Button x:Name="BtnWord" Content="Договор (Word)" Click="BtnWord_Click" Background="#2B579A" Foreground="White" Width="130" Style="{StaticResource SuccessBtnStyle}" FontSize="15" FontWeight="Bold" Margin="10,0,0,0"/>
                 <Button x:Name="BtnExport" Height="55" Content="В Excel" Click="BtnExport_Click" Style="{StaticResource SuccessBtnStyle}" Foreground="White" Width="120" Margin="15,0,0,0" FontSize="18" FontWeight="Bold"/>
             </StackPanel>
         </Grid>

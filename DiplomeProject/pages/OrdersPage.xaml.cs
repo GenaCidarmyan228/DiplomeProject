@@ -1,4 +1,5 @@
 ﻿using DiplomeProject;
+using Word = Microsoft.Office.Interop.Word;
 using KitchenManager.Windows;
 using Microsoft.Win32;
 using System;
@@ -22,7 +23,70 @@ namespace KitchenManager.Pages
         {
             UpdateOrders();
         }
+        private void BtnWord_Click(object sender, RoutedEventArgs e)
+        {
+           
+            var selectedOrder = DGridOrders.SelectedItem as Orders;
+            if (selectedOrder == null)
+            {
+                MessageBox.Show("Сначала выберите заказ в таблице!", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
+            
+            string templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ContractTemplate.docx");
+
+            if (!File.Exists(templatePath))
+            {
+                MessageBox.Show("Файл шаблона ContractTemplate.docx не найден в папке с программой!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            try
+            {
+                
+                var wordApp = new Word.Application();
+                wordApp.Visible = false; 
+
+               
+                var wordDoc = wordApp.Documents.Open(templatePath);
+
+                
+                string clientFullName = selectedOrder.Clients != null ? $"{selectedOrder.Clients.Surname} {selectedOrder.Clients.Name}" : "Не указан";
+                string eqTitle = selectedOrder.Equipment != null ? selectedOrder.Equipment.Title : "Без оборудования";
+                string srvTitle = selectedOrder.Services != null ? selectedOrder.Services.Title : "Без услуг";
+
+              
+                ReplaceWordStub(wordDoc, "{OrderNumber}", selectedOrder.ID_Order.ToString());
+                ReplaceWordStub(wordDoc, "{OrderDate}", selectedOrder.OrderDate.ToString("dd.MM.yyyy"));
+                ReplaceWordStub(wordDoc, "{ClientName}", clientFullName);
+                ReplaceWordStub(wordDoc, "{EquipmentName}", eqTitle);
+                ReplaceWordStub(wordDoc, "{ServiceName}", srvTitle);
+                ReplaceWordStub(wordDoc, "{TotalSum}", selectedOrder.TotalPrice.ToString("N2"));
+
+                
+                wordApp.Visible = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при формировании договора: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+        
+        private void ReplaceWordStub(Word.Document wordDocument, string stubToReplace, string text)
+        {
+            var range = wordDocument.Content;
+            range.Find.ClearFormatting();
+
+            
+            range.Find.Execute(
+                FindText: stubToReplace,
+                ReplaceWith: text,
+                Replace: Word.WdReplace.wdReplaceAll
+            );
+        }
         private void UpdateOrders()
         {
             
