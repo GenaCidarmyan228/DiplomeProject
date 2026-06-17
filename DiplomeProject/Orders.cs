@@ -68,12 +68,32 @@ namespace DiplomeProject
         {
             get
             {
-                if (ID_Status == 3) return "#C8E6C9";
-                if (ID_Status == 1) return "#FFE0B2";
-                return "White";
+               
+                if (OrderStatus == null || string.IsNullOrEmpty(OrderStatus.StatusName))
+                    return "Transparent";
+
+                
+                switch (OrderStatus.StatusName.Trim().ToLower())
+                {
+                    case "новый":
+                        return "#007BFF"; 
+
+                    case "в работе":
+                        return "#FFC107"; 
+
+                    case "выполнен":
+                        return "#A8E4A0"; 
+
+                    case "отменен":
+                        return "#DC3545"; 
+
+                    default:
+                        return "Transparent"; 
+                }
             }
         }
     }
 }
+
     
 

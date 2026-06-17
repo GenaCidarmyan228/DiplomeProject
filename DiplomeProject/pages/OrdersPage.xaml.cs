@@ -105,8 +105,10 @@ namespace KitchenManager.Pages
                 decimal totalSum = allOrders.Sum(o => o.TotalPrice);
                 TxtTotalRevenue.Text = $"{totalSum:N2} ₽";
 
-                
-                int activeCount = allOrders.Count(o => o.OrderStatus != null && o.OrderStatus.StatusName != "Выполнен");
+
+                int activeCount = allOrders.Count(o => o.OrderStatus != null &&
+                                       o.OrderStatus.StatusName != "Выполнен" &&
+                                       o.OrderStatus.StatusName != "Отменен");
                 TxtActiveOrdersCount.Text = activeCount.ToString();
             }
         }
