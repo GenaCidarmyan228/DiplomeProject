@@ -24,7 +24,9 @@ namespace DiplomeProject
         public string Description { get; set; }
         public decimal Price { get; set; }
         public int StockQuantity { get; set; }
-    
+      
+            public int SelectedQuantity { get; set; } = 1; 
+        
         public virtual ICollection<Orders> Orders { get; set; }
     }
 }

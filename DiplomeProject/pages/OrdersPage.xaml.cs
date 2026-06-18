@@ -1,4 +1,6 @@
 ﻿using DiplomeProject;
+using System.ComponentModel;
+using System.Windows.Data;
 using Word = Microsoft.Office.Interop.Word;
 using KitchenManager.Windows;
 using Microsoft.Win32;
@@ -89,26 +91,31 @@ namespace KitchenManager.Pages
         }
         private void UpdateOrders()
         {
-            
             var allOrders = KitchenBaseEntities.GetContext().Orders.ToList();
 
-           
-            DGridOrders.ItemsSource = allOrders;
+          
+            ICollectionView view = CollectionViewSource.GetDefaultView(allOrders);
 
+            view.GroupDescriptions.Clear();
            
+            view.GroupDescriptions.Add(new PropertyGroupDescription("OrderDate"));
+
+          
+            view.SortDescriptions.Clear();
+            view.SortDescriptions.Add(new SortDescription("OrderDate", ListSortDirection.Descending));
+
+            DGridOrders.ItemsSource = view;
+
+            
             if (allOrders != null)
             {
-              
                 TxtTotalOrdersCount.Text = allOrders.Count.ToString();
-
-                
                 decimal totalSum = allOrders.Sum(o => o.TotalPrice);
                 TxtTotalRevenue.Text = $"{totalSum:N2} ₽";
 
-
                 int activeCount = allOrders.Count(o => o.OrderStatus != null &&
-                                       o.OrderStatus.StatusName != "Выполнен" &&
-                                       o.OrderStatus.StatusName != "Отменен");
+                                                       o.OrderStatus.StatusName != "Выполнен" &&
+                                                       o.OrderStatus.StatusName != "Отменен");
                 TxtActiveOrdersCount.Text = activeCount.ToString();
             }
         }
@@ -121,7 +128,6 @@ namespace KitchenManager.Pages
             if (!string.IsNullOrEmpty(searchText))
             {
                 currentData = currentData.Where(o =>
-                 
                     o.ID_Order.ToString().Contains(searchText) ||
                     o.OrderDate.ToString("dd.MM.yyyy").Contains(searchText) ||
                     (o.Clients != null && o.Clients.Surname.ToLower().Contains(searchText)) ||
@@ -133,7 +139,15 @@ namespace KitchenManager.Pages
                 ).ToList();
             }
 
-            DGridOrders.ItemsSource = currentData;
+            
+            ICollectionView view = CollectionViewSource.GetDefaultView(currentData);
+            view.GroupDescriptions.Clear();
+            view.GroupDescriptions.Add(new PropertyGroupDescription("OrderDate"));
+
+            view.SortDescriptions.Clear();
+            view.SortDescriptions.Add(new SortDescription("OrderDate", ListSortDirection.Descending));
+
+            DGridOrders.ItemsSource = view;
         }
         private void BtnExport_Click(object sender, RoutedEventArgs e)
         {

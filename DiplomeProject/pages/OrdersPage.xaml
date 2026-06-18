@@ -4,146 +4,139 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
-      d:DesignHeight="700" d:DesignWidth="1300" MinHeight="300" MinWidth="700"
+      d:DesignHeight="800" d:DesignWidth="1200"
       Title="Заказы" Loaded="Page_Loaded" Background="{StaticResource AppBackground}">
 
-    <Grid Margin="20">
+    <Grid Margin="30">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Margin="0,0,0,20">
+        <Grid Grid.Row="0" Margin="0,0,0,25">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text="Заказы" FontSize="32" FontWeight="Bold" Foreground="{StaticResource TextPrimary}" VerticalAlignment="Center" Margin="0,0,25,0"/>
+            <TextBlock Grid.Column="0" Text="Заказы" FontSize="36" FontWeight="Bold" Foreground="{StaticResource TextPrimary}" VerticalAlignment="Center" Margin="0,0,30,0"/>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                <TextBlock Text="Поиск:" Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="20" FontWeight="SemiBold"/>
-                <TextBox x:Name="TxtSearch" Width="280" Height="40" FontSize="20" VerticalContentAlignment="Center" TextChanged="TxtSearch_TextChanged"/>
+                <TextBlock Text="Поиск:" Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center" Margin="0,0,15,0" FontSize="18" FontWeight="SemiBold"/>
+                <TextBox x:Name="TxtSearch" Width="350" Height="45" FontSize="18" VerticalContentAlignment="Center" TextChanged="TxtSearch_TextChanged"/>
             </StackPanel>
 
             <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="+ Новый заказ" Width="170" Height="55" Margin="0,0,15,0" Click="BtnAdd_Click" Style="{StaticResource SuccessBtnStyle}" FontWeight="Bold" FontSize="18"/>
-                <Button Content="Изменить" Width="130" Height="55" Margin="0,0,15,0" Click="BtnEdit_Click" Style="{StaticResource PrimaryBtnStyle}" FontWeight="Bold" FontSize="18"/>
-                <Button Content="Удалить" Width="120" Height="55" Click="BtnDelete_Click" Style="{StaticResource DangerBtnStyle}" FontWeight="Bold" FontSize="18"/>
-                <Button x:Name="BtnPrint" Height="55" Content="Печать заказа" Click="BtnPrint_Click" Style="{StaticResource SuccessBtnStyle}" Width="170" Margin="15,0,0,0" FontWeight="Bold" FontSize="18"/>
-                <Button x:Name="BtnWord" Content="Договор (Word)" Click="BtnWord_Click" Background="#2B579A" Foreground="White" Width="130" Style="{StaticResource SuccessBtnStyle}" FontSize="15" FontWeight="Bold" Margin="10,0,0,0"/>
-                <Button x:Name="BtnExport" Height="55" Content="В Excel" Click="BtnExport_Click" Style="{StaticResource SuccessBtnStyle}" Foreground="White" Width="120" Margin="15,0,0,0" FontSize="18" FontWeight="Bold"/>
+                <Button Content="+ Новый заказ" Width="180" Height="50" FontSize="16" Margin="0,0,10,0" Click="BtnAdd_Click" Style="{StaticResource SuccessBtnStyle}"/>
+                <Button Content="Изменить" Width="130" Height="50" FontSize="16" Margin="0,0,10,0" Click="BtnEdit_Click" Style="{StaticResource PrimaryBtnStyle}"/>
+                <Button Content="Удалить" Width="110" Height="50" FontSize="16" Click="BtnDelete_Click" Style="{StaticResource DangerBtnStyle}"/>
             </StackPanel>
         </Grid>
 
-        <UniformGrid Grid.Row="1" Columns="3" Margin="0,0,0,20">
-            <Border Background="#6C5CE7" CornerRadius="8" Padding="20" Margin="0,0,15,0">
-                <StackPanel>
-                    <TextBlock Text="ВСЕГО ЗАКАЗОВ" FontSize="22" Foreground="White" FontWeight="Bold"/>
-                    <TextBlock x:Name="TxtTotalOrdersCount" Text="0" FontSize="32" Foreground="White" FontWeight="Bold" Margin="0,5,0,0"/>
+        <UniformGrid Grid.Row="1" Columns="3" Margin="0,0,0,25" Height="120">
+            <Border Background="#6C5CE7" CornerRadius="12" Padding="20" Margin="0,0,10,0">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="ВСЕГО ПОЗИЦИЙ" FontSize="14" Foreground="#E0DFFF" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="TxtTotalOrdersCount" Text="0" FontSize="36" Foreground="White" FontWeight="Bold" Margin="0,5,0,0"/>
                 </StackPanel>
             </Border>
 
-            <Border Background="#00B894" CornerRadius="8" Padding="20" Margin="7,0,7,0">
-                <StackPanel>
-                    <TextBlock Text="ОБЩАЯ ВЫРУЧКА" FontSize="22" Foreground="White" FontWeight="Bold"/>
-                    <TextBlock x:Name="TxtTotalRevenue" Text="0 ₽" FontSize="32" Foreground="White" FontWeight="Bold" Margin="0,5,0,0"/>
+            <Border Background="#00B894" CornerRadius="12" Padding="20" Margin="10,0,10,0">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="ОБЩАЯ ВЫРУЧКА" FontSize="14" Foreground="#D1F7ED" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="TxtTotalRevenue" Text="0 ₽" FontSize="36" Foreground="White" FontWeight="Bold" Margin="0,5,0,0"/>
                 </StackPanel>
             </Border>
 
-            <Border Background="#FDCB6E" CornerRadius="8" Padding="20" Margin="15,0,0,0">
-                <StackPanel>
-                    <TextBlock Text="ЗАКАЗОВ В РАБОТЕ" FontSize="22" Foreground="White" FontWeight="Bold"/>
-                    <TextBlock x:Name="TxtActiveOrdersCount" Text="0" FontSize="32" Foreground="White" FontWeight="Bold" Margin="0,5,0,0"/>
+            <Border Background="#FDCB6E" CornerRadius="12" Padding="20" Margin="10,0,0,0">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="ЗАКАЗОВ В РАБОТЕ" FontSize="14" Foreground="#FFF4DB" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="TxtActiveOrdersCount" Text="0" FontSize="36" Foreground="White" FontWeight="Bold" Margin="0,5,0,0"/>
                 </StackPanel>
             </Border>
         </UniformGrid>
 
-        <Border Grid.Row="2" Background="{StaticResource CardBackground}" CornerRadius="10" Effect="{StaticResource CardShadow}">
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,170,0,10" Panel.ZIndex="10">
+            <Button x:Name="BtnPrint" Content="🖨 Печать заказа" Click="BtnPrint_Click" Style="{StaticResource SuccessBtnStyle}" Width="180" Height="45" FontSize="15" Margin="0,0,10,0"/>
+            <Button x:Name="BtnWord" Content="📝 Договор (Word)" Click="BtnWord_Click" Background="#2B579A" Foreground="White" Width="180" Height="45" FontSize="15" Margin="0,0,10,0"/>
+            <Button x:Name="BtnExport" Content="📊 В Excel" Click="BtnExport_Click" Background="#207347" Foreground="White" Width="130" Height="45" FontSize="15"/>
+        </StackPanel>
 
-            <DataGrid x:Name="DGridOrders" AutoGenerateColumns="False" IsReadOnly="True" Margin="10" BorderThickness="0" 
-                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
-                      GridLinesVisibility="Horizontal" FontSize="18" MinRowHeight="50">
+        <Border Grid.Row="2" Background="{StaticResource CardBackground}" CornerRadius="15" Effect="{StaticResource CardShadow}" Margin="0,50,0,0">
+            <DataGrid x:Name="DGridOrders" AutoGenerateColumns="False" IsReadOnly="True" Margin="15" 
+                      BorderThickness="0" FontSize="18" RowHeight="60">
 
-                <DataGrid.ColumnHeaderStyle>
+                <DataGrid.Resources>
                     <Style TargetType="DataGridColumnHeader">
-                        <Setter Property="FontSize" Value="18"/>
+                        <Setter Property="FontSize" Value="16"/>
                         <Setter Property="FontWeight" Value="Bold"/>
-                        <Setter Property="Padding" Value="10"/>
+                        <Setter Property="Height" Value="50"/>
+                        <Setter Property="Padding" Value="10,0"/>
                     </Style>
-                </DataGrid.ColumnHeaderStyle>
+                </DataGrid.Resources>
+
+                <DataGrid.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.ContainerStyle>
+                            <Style TargetType="{x:Type GroupItem}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type GroupItem}">
+                                            <Expander IsExpanded="True" Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" Margin="0,0,0,15">
+                                                <Expander.Header>
+                                                    <StackPanel Orientation="Horizontal" Margin="10">
+                                                        <TextBlock Text="📦 ОБЩИЙ ЗАКАЗ ОТ " FontWeight="Bold" Foreground="#4A5568" FontSize="18"/>
+                                                        <TextBlock Text="{Binding Name, StringFormat='dd.MM.yyyy HH:mm'}" FontWeight="Bold" Foreground="#6C5CE7" FontSize="18"/>
+                                                        <TextBlock Text=" — Позиций: " Foreground="Gray" FontSize="18" Margin="25,0,0,0"/>
+                                                        <TextBlock Text="{Binding ItemCount}" FontWeight="Bold" Foreground="#00B894" FontSize="18"/>
+                                                    </StackPanel>
+                                                </Expander.Header>
+                                                <ItemsPresenter />
+                                            </Expander>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GroupStyle.ContainerStyle>
+                    </GroupStyle>
+                </DataGrid.GroupStyle>
 
                 <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding ID_Order}" Width="70"/>
 
-                    <DataGridTextColumn Header="№" Binding="{Binding ID_Order}" Width="Auto" MinWidth="50"/>
-                    <DataGridTextColumn Header="ДАТА" Binding="{Binding OrderDate, StringFormat=dd.MM.yyyy}" Width="Auto" MinWidth="110" />
+                    <DataGridTemplateColumn Header="СТАТУС" Width="160">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Background="{Binding StatusColor}" CornerRadius="6" Margin="5" Padding="12,6" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding OrderStatus.StatusName}" Foreground="White" FontWeight="Bold" FontSize="16"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-                    <DataGridTextColumn Header="СТАТУС" Binding="{Binding OrderStatus.StatusName}" Width="Auto" MinWidth="150">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Background" Value="{Binding StatusColor}"/>
-                                <Setter Property="Padding" Value="12,8"/>
-                                <Setter Property="Foreground" Value="White"/>
-                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                <Setter Property="HorizontalAlignment" Value="Left"/>
-                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                <Setter Property="FontSize" Value="18"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
+                    <DataGridTextColumn Header="КЛИЕНТ" Binding="{Binding ClientFullName}" Width="2*"/>
+                    <DataGridTextColumn Header="ТОВАР / УСЛУГА" Width="3*">
+                        <DataGridTextColumn.Binding>
+                            <MultiBinding StringFormat="{}{0} {1}">
+                                <Binding Path="Equipment.Title"/>
+                                <Binding Path="Services.Title"/>
+                            </MultiBinding>
+                        </DataGridTextColumn.Binding>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn Header="КЛИЕНТ" Binding="{Binding ClientFullName}" Width="*">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="TextWrapping" Value="Wrap"/>
-                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                <Setter Property="Padding" Value="5"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-
-                    <DataGridTextColumn Header="СОТРУДНИК" Binding="{Binding EmployeeFullName}" Width="*">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="TextWrapping" Value="Wrap"/>
-                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                <Setter Property="Padding" Value="5"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-
-                    <DataGridTextColumn Header="СУММА" Binding="{Binding TotalPrice, StringFormat='{}{0:N2} ₽'}" Width="Auto" MinWidth="120">
+                    <DataGridTextColumn Header="СУММА" Binding="{Binding TotalPrice, StringFormat='{}{0:N0} ₽'}" Width="150">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="FontWeight" Value="Bold"/>
                                 <Setter Property="VerticalAlignment" Value="Center"/>
-                                <Setter Property="Padding" Value="5"/>
+                                <Setter Property="FontSize" Value="20"/>
+                                <Setter Property="Foreground" Value="#2D3436"/>
+                                <Setter Property="Margin" Value="10,0"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-
-                    <DataGridTextColumn Header="ТОВАР" Binding="{Binding Equipment.Title}" Width="*">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="TextWrapping" Value="Wrap"/>
-                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                <Setter Property="Padding" Value="5"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-
-                    <DataGridTextColumn Header="УСЛУГА" Binding="{Binding Services.Title}" Width="*">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="TextWrapping" Value="Wrap"/>
-                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                <Setter Property="Padding" Value="5"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-
                 </DataGrid.Columns>
             </DataGrid>
         </Border>

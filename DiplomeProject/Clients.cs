@@ -33,6 +33,22 @@ namespace DiplomeProject
                 return Surname + " " + Name + " " + Patronymic;
             }
         }
+        
+        public string ClientIdColor
+        {
+            get
+            {
+                
+                if (this.Orders != null && this.Orders.Count > 0)
+                {
+                    return "#DC3545"; 
+                }
+
+               
+                return "#007BFF";
+            }
+
+        }
         public virtual ICollection<Orders> Orders { get; set; }
     }
 }
