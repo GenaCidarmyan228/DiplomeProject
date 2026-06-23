@@ -3,9 +3,14 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:KitchenManager.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="1200"
       Title="Заказы" Loaded="Page_Loaded" Background="{StaticResource AppBackground}">
+
+    <Page.Resources>
+        <local:GroupTotalConverter x:Key="GroupTotalConverter"/>
+    </Page.Resources>
 
     <Grid Margin="30">
         <Grid.RowDefinitions>
@@ -65,8 +70,7 @@
         </StackPanel>
 
         <Border Grid.Row="2" Background="{StaticResource CardBackground}" CornerRadius="15" Effect="{StaticResource CardShadow}" Margin="0,50,0,0">
-            <DataGrid x:Name="DGridOrders" AutoGenerateColumns="False" IsReadOnly="True" Margin="15" 
-                      BorderThickness="0" FontSize="18" RowHeight="60">
+            <DataGrid x:Name="DGridOrders" AutoGenerateColumns="False" IsReadOnly="True" Margin="15" BorderThickness="0" FontSize="18" RowHeight="60">
 
                 <DataGrid.Resources>
                     <Style TargetType="DataGridColumnHeader">
@@ -87,10 +91,16 @@
                                             <Expander IsExpanded="True" Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" Margin="0,0,0,15">
                                                 <Expander.Header>
                                                     <StackPanel Orientation="Horizontal" Margin="10">
-                                                        <TextBlock Text="📦 ОБЩИЙ ЗАКАЗ ОТ " FontWeight="Bold" Foreground="#4A5568" FontSize="18"/>
-                                                        <TextBlock Text="{Binding Name, StringFormat='dd.MM.yyyy HH:mm'}" FontWeight="Bold" Foreground="#6C5CE7" FontSize="18"/>
-                                                        <TextBlock Text=" — Позиций: " Foreground="Gray" FontSize="18" Margin="25,0,0,0"/>
-                                                        <TextBlock Text="{Binding ItemCount}" FontWeight="Bold" Foreground="#00B894" FontSize="18"/>
+                                                        <Border Background="{Binding Items[0].StatusColor}" CornerRadius="6" Padding="12,4" Margin="0,0,15,0" VerticalAlignment="Center">
+                                                            <TextBlock Text="{Binding Items[0].OrderStatus.StatusName}" Foreground="White" FontWeight="Bold" FontSize="16"/>
+                                                        </Border>
+
+                                                        <TextBlock Text="📦 ОБЩИЙ ЗАКАЗ ОТ " FontWeight="Bold" Foreground="#4A5568" FontSize="18" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="{Binding Name, StringFormat='dd.MM.yyyy HH:mm'}" FontWeight="Bold" Foreground="#6C5CE7" FontSize="18" VerticalAlignment="Center"/>
+                                                        <TextBlock Text=" — Позиций: " Foreground="Gray" FontSize="18" Margin="25,0,0,0" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="{Binding ItemCount}" FontWeight="Bold" Foreground="#00B894" FontSize="18" VerticalAlignment="Center"/>
+                                                        <TextBlock Text=" — Общая стоимость: " Foreground="Gray" FontSize="18" Margin="25,0,0,0" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="{Binding Items, Converter={StaticResource GroupTotalConverter}}" FontWeight="Bold" Foreground="#D63031" FontSize="18" VerticalAlignment="Center"/>
                                                     </StackPanel>
                                                 </Expander.Header>
                                                 <ItemsPresenter />
@@ -106,25 +116,18 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Binding="{Binding ID_Order}" Width="70"/>
 
-                    <DataGridTemplateColumn Header="СТАТУС" Width="160">
+                    <DataGridTextColumn Header="КЛИЕНТ" Binding="{Binding ClientFullName}" Width="2*"/>
+
+                    <DataGridTemplateColumn Header="ТОВАР / УСЛУГА" Width="3*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Border Background="{Binding StatusColor}" CornerRadius="6" Margin="5" Padding="12,6" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding OrderStatus.StatusName}" Foreground="White" FontWeight="Bold" FontSize="16"/>
-                                </Border>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Equipment.Title}" Margin="0,0,5,0"/>
+                                    <TextBlock Text="{Binding Services.Title}" />
+                                </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-
-                    <DataGridTextColumn Header="КЛИЕНТ" Binding="{Binding ClientFullName}" Width="2*"/>
-                    <DataGridTextColumn Header="ТОВАР / УСЛУГА" Width="3*">
-                        <DataGridTextColumn.Binding>
-                            <MultiBinding StringFormat="{}{0} {1}">
-                                <Binding Path="Equipment.Title"/>
-                                <Binding Path="Services.Title"/>
-                            </MultiBinding>
-                        </DataGridTextColumn.Binding>
-                    </DataGridTextColumn>
 
                     <DataGridTextColumn Header="СУММА" Binding="{Binding TotalPrice, StringFormat='{}{0:N0} ₽'}" Width="150">
                         <DataGridTextColumn.ElementStyle>

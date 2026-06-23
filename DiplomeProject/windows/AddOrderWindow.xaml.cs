@@ -45,14 +45,14 @@ namespace KitchenManager.Windows
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
-            
+
             if (ComboClients.SelectedItem == null)
             {
                 MessageBox.Show("Пожалуйста, выберите клиента!", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-           
+
             var selectedEquipments = ListEquipment.SelectedItems.Cast<Equipment>().ToList();
             var selectedServices = ListServices.SelectedItems.Cast<Services>().ToList();
             var selectedEmployees = ListEmployees.SelectedItems.Cast<Employees>().ToList();
@@ -69,7 +69,7 @@ namespace KitchenManager.Windows
                 return;
             }
 
-            
+
             List<Equipment> equipmentToOrder = new List<Equipment>();
             foreach (var eq in selectedEquipments)
             {
@@ -90,45 +90,50 @@ namespace KitchenManager.Windows
 
             try
             {
-                
-                int maxCount = Math.Max(Math.Max(equipmentToOrder.Count, selectedServices.Count), selectedEmployees.Count);
+                DateTime currentOrderTime = DateTime.Now;
+                int employeeIndex = 0; 
 
                
-                DateTime currentOrderTime = DateTime.Now;
-
-                for (int i = 0; i < maxCount; i++)
+                foreach (var eq in equipmentToOrder)
                 {
                     Orders newOrder = new Orders();
-                   
                     newOrder.OrderDate = currentOrderTime;
                     newOrder.ID_Client = (int)ComboClients.SelectedValue;
                     newOrder.ID_Status = 1;
+                    newOrder.ID_Equipment = eq.ID_Equipment;
 
-                    if (i < equipmentToOrder.Count)
-                    {
-                        var eq = equipmentToOrder[i];
-                        newOrder.ID_Equipment = eq.ID_Equipment;
-                        eq.StockQuantity -= 1;
-                    }
+                 
+                    newOrder.ID_Employee = selectedEmployees[employeeIndex % selectedEmployees.Count].ID_Employee;
+                    employeeIndex++;
 
-                    if (i < selectedServices.Count)
-                    {
-                        newOrder.ID_Service = selectedServices[i].ID_Service;
-                    }
+                    eq.StockQuantity -= 1; 
+                    KitchenBaseEntities.GetContext().Orders.Add(newOrder);
+                }
 
-                    newOrder.ID_Employee = selectedEmployees[i % selectedEmployees.Count].ID_Employee;
+              
+                foreach (var srv in selectedServices)
+                {
+                    Orders newOrder = new Orders();
+                    newOrder.OrderDate = currentOrderTime;
+                    newOrder.ID_Client = (int)ComboClients.SelectedValue;
+                    newOrder.ID_Status = 1;
+                    newOrder.ID_Service = srv.ID_Service;
+
+                   
+                    newOrder.ID_Employee = selectedEmployees[employeeIndex % selectedEmployees.Count].ID_Employee;
+                    employeeIndex++;
 
                     KitchenBaseEntities.GetContext().Orders.Add(newOrder);
                 }
 
                 KitchenBaseEntities.GetContext().SaveChanges();
 
-                MessageBox.Show($"Заказ успешно оформлен!\nСоздано позиций: {maxCount} шт.\nТовары списаны со склада.", "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"Корзина успешно оформлена!\nДобавлено позиций в чек: {equipmentToOrder.Count + selectedServices.Count} шт.", "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Системная ошибка при сохранении данных:\n" + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Системная ошибка:\n" + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

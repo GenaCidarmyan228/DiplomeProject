@@ -11,9 +11,32 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Collections.ObjectModel;
 
 namespace KitchenManager.Pages
 {
+    public class GroupTotalConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is ReadOnlyObservableCollection<object> items)
+            {
+                decimal total = 0;
+                foreach (Orders order in items)
+                {
+                    total += order.TotalPrice;
+                }
+                return $"{total:N2} ₽";
+            }
+            return "0.00 ₽";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public partial class OrdersPage : Page
     {
         public OrdersPage()
@@ -25,9 +48,9 @@ namespace KitchenManager.Pages
         {
             UpdateOrders();
         }
+
         private void BtnWord_Click(object sender, RoutedEventArgs e)
         {
-           
             var selectedOrder = DGridOrders.SelectedItem as Orders;
             if (selectedOrder == null)
             {
@@ -35,7 +58,6 @@ namespace KitchenManager.Pages
                 return;
             }
 
-            
             string templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ContractTemplate.docx");
 
             if (!File.Exists(templatePath))
@@ -46,19 +68,15 @@ namespace KitchenManager.Pages
 
             try
             {
-                
                 var wordApp = new Word.Application();
-                wordApp.Visible = false; 
+                wordApp.Visible = false;
 
-               
                 var wordDoc = wordApp.Documents.Open(templatePath);
 
-                
                 string clientFullName = selectedOrder.Clients != null ? $"{selectedOrder.Clients.Surname} {selectedOrder.Clients.Name}" : "Не указан";
                 string eqTitle = selectedOrder.Equipment != null ? selectedOrder.Equipment.Title : "Без оборудования";
                 string srvTitle = selectedOrder.Services != null ? selectedOrder.Services.Title : "Без услуг";
 
-              
                 ReplaceWordStub(wordDoc, "{OrderNumber}", selectedOrder.ID_Order.ToString());
                 ReplaceWordStub(wordDoc, "{OrderDate}", selectedOrder.OrderDate.ToString("dd.MM.yyyy"));
                 ReplaceWordStub(wordDoc, "{ClientName}", clientFullName);
@@ -66,7 +84,6 @@ namespace KitchenManager.Pages
                 ReplaceWordStub(wordDoc, "{ServiceName}", srvTitle);
                 ReplaceWordStub(wordDoc, "{TotalSum}", selectedOrder.TotalPrice.ToString("N2"));
 
-                
                 wordApp.Visible = true;
             }
             catch (Exception ex)
@@ -75,38 +92,33 @@ namespace KitchenManager.Pages
             }
         }
 
-
-        
         private void ReplaceWordStub(Word.Document wordDocument, string stubToReplace, string text)
         {
             var range = wordDocument.Content;
             range.Find.ClearFormatting();
 
-            
             range.Find.Execute(
                 FindText: stubToReplace,
                 ReplaceWith: text,
                 Replace: Word.WdReplace.wdReplaceAll
             );
         }
+
         private void UpdateOrders()
         {
+            KitchenBaseEntities.GetContext().ChangeTracker.Entries().ToList().ForEach(p => p.Reload());
             var allOrders = KitchenBaseEntities.GetContext().Orders.ToList();
 
-          
             ICollectionView view = CollectionViewSource.GetDefaultView(allOrders);
 
             view.GroupDescriptions.Clear();
-           
             view.GroupDescriptions.Add(new PropertyGroupDescription("OrderDate"));
 
-          
             view.SortDescriptions.Clear();
             view.SortDescriptions.Add(new SortDescription("OrderDate", ListSortDirection.Descending));
 
             DGridOrders.ItemsSource = view;
 
-            
             if (allOrders != null)
             {
                 TxtTotalOrdersCount.Text = allOrders.Count.ToString();
@@ -139,7 +151,6 @@ namespace KitchenManager.Pages
                 ).ToList();
             }
 
-            
             ICollectionView view = CollectionViewSource.GetDefaultView(currentData);
             view.GroupDescriptions.Clear();
             view.GroupDescriptions.Add(new PropertyGroupDescription("OrderDate"));
@@ -149,18 +160,20 @@ namespace KitchenManager.Pages
 
             DGridOrders.ItemsSource = view;
         }
+
         private void BtnExport_Click(object sender, RoutedEventArgs e)
         {
-          
-            var currentOrders = DGridOrders.ItemsSource as List<Orders>;
+            var view = CollectionViewSource.GetDefaultView(DGridOrders.ItemsSource);
+            if (view == null) return;
 
-            if (currentOrders == null || currentOrders.Count == 0)
+            var currentOrders = view.Cast<Orders>().ToList();
+
+            if (currentOrders.Count == 0)
             {
                 MessageBox.Show("Нет данных для экспорта!", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "CSV файл (Excel)|*.csv";
             saveFileDialog.FileName = $"Отчет_Заказы_{DateTime.Now.ToString("dd_MM_yyyy")}.csv";
@@ -169,16 +182,13 @@ namespace KitchenManager.Pages
             {
                 try
                 {
-              
                     using (StreamWriter sw = new StreamWriter(saveFileDialog.FileName, false, new UTF8Encoding(true)))
                     {
-                       
                         sw.WriteLine("Номер заказа;Дата;Клиент;Сотрудник;Товар;Услуга;Статус;Сумма");
 
-                      
                         foreach (var order in currentOrders)
                         {
-                            string date = order.OrderDate.ToString("dd.MM.yyyy");
+                            string date = order.OrderDate.ToString("dd.MM.yyyy HH:mm");
                             string client = order.Clients != null ? order.Clients.Surname : "Нет данных";
                             string employee = order.Employees != null ? order.Employees.Surname : "Нет данных";
                             string equipment = order.Equipment != null ? order.Equipment.Title : "Нет данных";
@@ -198,6 +208,7 @@ namespace KitchenManager.Pages
                 }
             }
         }
+
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
             AddOrderWindow addWindow = new AddOrderWindow();
@@ -221,7 +232,6 @@ namespace KitchenManager.Pages
 
         private void BtnPrint_Click(object sender, RoutedEventArgs e)
         {
-            
             var selectedOrder = DGridOrders.SelectedItem as Orders;
 
             if (selectedOrder == null)
@@ -234,12 +244,10 @@ namespace KitchenManager.Pages
 
             if (printDialog.ShowDialog() == true)
             {
-               
                 DGridOrders.IsEnabled = false;
 
                 try
                 {
-                    
                     printDialog.PrintVisual(DGridOrders, $"Заказ №{selectedOrder.ID_Order}");
                     MessageBox.Show("Заказ успешно отправлен на печать!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
